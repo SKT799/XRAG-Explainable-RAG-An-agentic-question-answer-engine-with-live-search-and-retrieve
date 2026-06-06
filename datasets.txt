@@ -1,0 +1,30 @@
+X-RAG — Datasets
+================
+
+The raw datasets are NOT stored in this repository. They total ~320 MB, are
+third-party data under their own licenses, and are meant to be downloaded rather
+than re-hosted. The pipeline fetches them from the Hugging Face Hub on demand:
+
+    python -m training.data.download_datasets     # download all of the below
+    python -m training.data.normalize             # -> data/train, data/test JSONL
+
+(Or just run section 2 of run_full_pipeline.ipynb.)
+
+Sources
+-------
+
+Generator fine-tuning (SFT)
+  HAGRID        miracl/hagrid       https://huggingface.co/datasets/miracl/hagrid
+
+NLI attribution head (entailment calibration)
+  ANLI          facebook/anli       https://huggingface.co/datasets/facebook/anli
+  FEVER v1.0    fever/fever         https://huggingface.co/datasets/fever/fever
+  WICE          jon-tow/wice        https://huggingface.co/datasets/jon-tow/wice
+  VitaminC      tals/vitaminc       https://huggingface.co/datasets/tals/vitaminc
+
+(The NLI head loads FEVER via its NLI-reformatted mirror, pietrolesci/nli_fever.)
+
+Licenses
+--------
+Each dataset is governed by its own license — check the dataset card on each page
+above, and colab_pipeline/training/data/LICENSES.md, before any redistribution.

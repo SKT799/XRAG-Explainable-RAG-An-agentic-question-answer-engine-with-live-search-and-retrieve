@@ -1,0 +1,102 @@
+# =============================================================================
+# X-RAG · Single source of truth for the whole pipeline
+# Every block reads from here so you change behavior in one place.
+# =============================================================================
+
+project_name: xrag
+mode: live_web              # "live_web" (default) or "persistent_kb"
+
+# ---- Per-request budget --------------------------------------------------
+budget:
+  total_sec: 25             # the orchestrator gives each stage a slice of this
+
+# ---- Block 1: API --------------------------------------------------------
+api:
+  host: 0.0.0.0
+  port: 8000
+  rate_limit_per_min: 60
+
+# ---- Block 2: Safety (Llama Guard) --------------------------------------
+# On A100 we use the 8B guard for better recall on the MLCommons taxonomy.
+# On free Colab T4 (16 GB) switch this to meta-llama/Llama-Guard-3-1B.
+safety:
+  enabled: true
+  guard_model_id: meta-llama/Llama-Guard-3-8B
+  fallback_rule_based: true                       # if Guard cannot load, use a regex stub
+  output_side_check: true                         # re-run Guard on the final answer
+
+# ---- Block 3: Query rewriter / fan-out ----------------------------------
+rewriter:
+  model_id: unsloth/Llama-3.2-3B-Instruct         # ungated mirror, Colab-friendly
+  adapter_path: null                              # filled in after Stage 6.4
+  max_sub_queries: 3
+
+# ---- Block 4: Web search -------------------------------------------------
+search:
+  provider: ddgs                                  # "ddgs" (Colab) or "searxng" (Docker)
+  searxng_url: http://localhost:8080
+  k_per_query: 10                                 # top URLs per sub-query
+
+# ---- Block 5: Scrape + cache --------------------------------------------
+scrape:
+  concurrency: 8
+  timeout_sec: 10
+  user_agent: "xrag-bot/0.1 (+https://github.com/<you>/xrag)"
+  cache_ttl_sec: 600                              # 10-minute Redis TTL
+
+# ---- Block 6: Clean + chunk (FROM SCRATCH) ------------------------------
+chunking:
+  size_tokens: 612                                # target chunk size (+100 for more context per chunk)
+  overlap_ratio: 0.15                             # 15% overlap
+  link_density_drop: 0.55                         # boilerplate filter thresholds
+  text_density_floor: 25                          # chars / tag
+
+# ---- Block 7: Embedding (bge-m3) + FAISS + hybrid RRF -------------------
+embedding:
+  model_id: BAAI/bge-m3
+  top_n_candidates: 50                            # bi-encoder shortlist
+  rrf_k: 60
+
+# ---- Block 8: Reranking (cross-encoder) ---------------------------------
+reranking:
+  model_id: BAAI/bge-reranker-v2-m3
+  top_k_keep: 10                                  # what the generator sees
+  min_relevance: 0.5                              # drop chunks below this sigmoid(CE) relevance (0 = off)
+
+# ---- Block 9: Generation (Llama 3.1-8B) ---------------------------------
+# Loaded in bf16 (no quantization). LoRA adapter is mounted on top after
+# Stage 6.2 / 6.3 training. Requires a GPU with >=16 GB VRAM for the base.
+generator:
+  model_id: NousResearch/Meta-Llama-3.1-8B-Instruct   # ungated mirror
+  adapter_path: null                              # filled in after Stage 6.2/6.3
+  temperature: 0.2
+  max_new_tokens: 1024
+  max_input_tokens: 4096                          # used by build_prompt as the budget
+
+# ---- Block 10: Attribution (DeBERTa NLI + score math) -------------------
+attribution:
+  model_id: MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli
+  head_adapter_path: null                         # filled in after Stage 6.5
+  threshold: 0.75                                 # τ: score < τ → red flag
+  formula: product                                # product | min | geomean
+  ce_normalize: sigmoid                           # turns reranker logit → 0..1
+
+# ---- Orchestrator: corrective / iterative RAG (LangGraph) ----------------
+# When corrective_rag is on, engine.run() routes through a LangGraph state
+# machine that RETRIES (re-rewrite with the 8B few-shot rewriter + re-search)
+# when an answer has no green (supported) claim, up to max_attempts. Falls back
+# to the linear pipeline if langgraph isn't installed or anything errors.
+orchestrator:
+  corrective_rag: true
+  max_attempts: 3
+
+# ---- Storage -------------------------------------------------------------
+storage:
+  redis_url: redis://localhost:6379/0
+  qdrant_path: ./data/qdrant                      # KB mode only
+  faiss_index_type: flat                          # for live mode (few hundred chunks)
+
+# ---- Paths ---------------------------------------------------------------
+paths:
+  data_dir: ./data
+  models_dir: ./models

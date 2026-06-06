@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320" fill="none" role="img" aria-label="X-RAG - Explainable RAG with Llama-3.1-8B">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1280" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0F2027"/>
+      <stop offset="0.55" stop-color="#203A43"/>
+      <stop offset="1" stop-color="#2C5364"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22D3EE"/>
+      <stop offset="1" stop-color="#38BDF8"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.3" r="0.7">
+      <stop offset="0" stop-color="#22D3EE" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .t { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1280" height="320" rx="24" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1280" height="320" rx="24" fill="url(#glow)"/>
+
+  <!-- decorative retrieval graph -->
+  <g stroke="#5EEAD4" stroke-width="2" opacity="0.45">
+    <line x1="952" y1="92" x2="1052" y2="70"/>
+    <line x1="1052" y1="70" x2="1126" y2="140"/>
+    <line x1="952" y1="92" x2="1040" y2="178"/>
+    <line x1="1040" y1="178" x2="1126" y2="140"/>
+    <line x1="1040" y1="178" x2="984" y2="236"/>
+    <line x1="1126" y1="140" x2="1158" y2="224"/>
+    <line x1="1040" y1="178" x2="1158" y2="224"/>
+  </g>
+  <g fill="url(#accent)">
+    <circle cx="952" cy="92" r="9"/>
+    <circle cx="1052" cy="70" r="7"/>
+    <circle cx="1126" cy="140" r="11"/>
+    <circle cx="1040" cy="178" r="13"/>
+    <circle cx="984" cy="236" r="7"/>
+    <circle cx="1158" cy="224" r="9"/>
+  </g>
+
+  <!-- accent bar -->
+  <rect x="80" y="86" width="64" height="6" rx="3" fill="url(#accent)"/>
+
+  <!-- title block -->
+  <text x="80" y="150" class="t" font-size="70" font-weight="800" fill="#FFFFFF" letter-spacing="1">X-RAG</text>
+  <text x="80" y="196" class="t" font-size="30" font-weight="600" fill="#E2F4F8">Explainable RAG with Llama-3.1-8B</text>
+  <text x="80" y="232" class="t" font-size="18" fill="#9FC7D4">Citation-faithful answers, scored sentence-by-sentence by an NLI judge.</text>
+
+  <!-- capability pills -->
+  <g class="t" font-size="15" font-weight="600" fill="#CFF3FB">
+    <rect x="80"  y="258" width="74"  height="34" rx="17" fill="#FFFFFF" fill-opacity="0.08" stroke="#5EEAD4" stroke-opacity="0.5"/>
+    <text x="117" y="280" text-anchor="middle">RAG</text>
+    <rect x="166" y="258" width="118" height="34" rx="17" fill="#FFFFFF" fill-opacity="0.08" stroke="#5EEAD4" stroke-opacity="0.5"/>
+    <text x="225" y="280" text-anchor="middle">LangGraph</text>
+    <rect x="296" y="258" width="90"  height="34" rx="17" fill="#FFFFFF" fill-opacity="0.08" stroke="#5EEAD4" stroke-opacity="0.5"/>
+    <text x="341" y="280" text-anchor="middle">FAISS</text>
+    <rect x="398" y="258" width="166" height="34" rx="17" fill="#FFFFFF" fill-opacity="0.08" stroke="#5EEAD4" stroke-opacity="0.5"/>
+    <text x="481" y="280" text-anchor="middle">NLI Attribution</text>
+  </g>
+</svg>

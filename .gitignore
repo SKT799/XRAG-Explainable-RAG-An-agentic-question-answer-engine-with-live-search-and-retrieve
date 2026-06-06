@@ -1,0 +1,36 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# ---- Virtual environments ----
+.venv/
+venv/
+env/
+
+# ---- Secrets / local env (the committed .env.example is the template) ----
+.env
+
+# ---- Downloaded datasets & generated artifacts (regenerate via the pipeline) ----
+colab_pipeline/datasets/
+colab_pipeline/data/datasets/
+colab_pipeline/data/train/*.jsonl
+colab_pipeline/data/test/*.jsonl
+colab_pipeline/docs/*.md
+
+# ---- Trained adapters / model weights (kept out of git) ----
+colab_pipeline/models/**
+!colab_pipeline/models/.gitkeep
+*.safetensors
+*.bin
+*.pt
+*.gguf
+
+# ---- OS cruft ----
+.DS_Store
+Thumbs.db
