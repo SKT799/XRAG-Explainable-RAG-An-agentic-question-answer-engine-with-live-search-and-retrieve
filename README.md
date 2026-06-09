@@ -50,7 +50,7 @@ The beauty of this project is: No OpenAI key needed. No Anthropic key needed. No
 - **Hybrid search** — dense `bge-m3` vectors in FAISS fused with keyword hits via Reciprocal Rank Fusion. A cross-encoder re-sorts the shortlist after that, and a relevance floor tosses anything clearly off-topic *before* the LLM ever sees it.
 - The agentic part: a **LangGraph** state machine that notices when an answer has zero supported claims and loops back to retry with a fresh query. Three attempts, on a clock.
 - The explainability part: a **DeBERTa NLI** model that scores each citation and paints it green or red.
-- A **three-way demo** — same question, three answers side by side: tuned model with retrieval, raw model with the same chunks, and the raw model with no sources at all. That last column is a good reminder of how confidently a bare LLM gets things wrong.
+- A **live comparision before vs after** — same question, generated answers side by side compared: tuned model with retrieval, raw model with the same chunks, and the raw model with no sources at all. That last column is a good reminder of how confidently a bare LLM gets things wrong.
 
 ---
 
@@ -90,9 +90,10 @@ Two questions decide whether a citation earns your trust. One: does the cited pa
 
 ```
 trust = P(entailment) x sigma(reranker score)
+=> this thing is totally my approach to solve the citation issue mathematically
 ```
 
-The case that matters most is high relevance with low entailment. The page is on-topic, looks completely legitimate, and still doesn't support the sentence. That's textbook hallucination — and it's exactly the kind of miss a "here are your top sources" UI quietly papers over.
+The case that matters most is high relevance with low entailment. The page is on-topic, looks completely legitimate and still doesn't support the sentence. That's textbook hallucination — and it's exactly the kind of miss a "here are your top sources" UI quietly papers over.
 
 | Cited page says it? | Was it relevant? | Flag |
 |:---:|:---:|:---|
@@ -101,15 +102,15 @@ The case that matters most is high relevance with low entailment. The page is on
 | **no** | **yes** | **red** — relevant page, wrong claim (the dangerous one) |
 | no | no | red — off in the weeds |
 
-Anything under 0.75 goes red. One thing worth admitting up front: that NLI judge needed babysitting. Early on its calibration temperature ran off to about 7 and *everything* flagged red — tuned model, raw model, didn't matter. Clamping it to a sane `[0.5, 3.0]` range is what made the scores mean something again. (More on that in the [fine-tuning README](https://github.com/SKT799/LoRA-FineTuning-Llama-3.1-8B).)
+Anything under 0.75(this we can change if needed, threshold is a hard limit that we need to control) goes red. One thing worth admitting up front: that NLI judge needed babysitting. Early on its calibration temperature ran off to about 7 and *everything* flagged red — tuned model, raw model, didn't matter. Clamping it to a sane `[0.5, 3.0]` range is what made the scores mean something again. (More on that in the [fine-tuning README](https://github.com/SKT799/LoRA-FineTuning-Llama-3.1-8B).)
 
 ---
 
 ## The retry loop (LangGraph)
 
-A linear pipeline answers once and stops. This one doesn't.
+A linear pipeline answers once and stops. But our pipeline is not a static pipeline.
 
-When the first attempt comes back with no supported claim, the graph routes back to the rewriter, reformulates the question, and searches again — up to three times, watching a time budget so it never spins forever. If LangGraph isn't installed, or anything throws, it quietly drops down to a plain-Python version of the same flow. Same nodes, no drama.
+When the first attempt comes back with no supported claim, the graph routes back to the rewriter, reformulates the question, and searches again — up to three times(which again can be changed according to your budget and user's query), watching a time budget so it never spins forever.
 
 ```mermaid
 stateDiagram-v2
