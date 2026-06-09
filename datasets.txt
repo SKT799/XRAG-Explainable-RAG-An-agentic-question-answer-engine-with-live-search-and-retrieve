@@ -1,15 +1,6 @@
 X-RAG — Datasets
 ================
 
-The raw datasets are NOT stored in this repository. They total ~320 MB, are
-third-party data under their own licenses, and are meant to be downloaded rather
-than re-hosted. The pipeline fetches them from the Hugging Face Hub on demand:
-
-    python -m training.data.download_datasets     # download all of the below
-    python -m training.data.normalize             # -> data/train, data/test JSONL
-
-(Or just run section 2 of run_full_pipeline.ipynb.)
-
 Sources
 -------
 
@@ -26,5 +17,4 @@ NLI attribution head (entailment calibration)
 
 Licenses
 --------
-Each dataset is governed by its own license — check the dataset card on each page
-above, and colab_pipeline/training/data/LICENSES.md, before any redistribution.
+Each dataset is governed by its own license
