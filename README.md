@@ -104,7 +104,7 @@ Anything under 0.75(this we can change if needed, threshold is a hard limit that
 
 A linear pipeline answers once and stops. But our pipeline is not a static pipeline.
 
-When the first attempt comes back with no supported claim, the graph routes back to the rewriter, reformulates the question, and searches again — up to three times(which again can be changed according to your budget and user's query), watching a time budget so it never spins forever.
+When the first attempt comes back with no supported claim, the graph routes back to the rewriter, reformulates the question and searches again — up to three times(which again can be changed according to your budget and user's query), watching a time budget so it never spins forever.
 
 ```mermaid
 stateDiagram-v2
@@ -142,9 +142,8 @@ Every knob lives in one file — [`config/config.yaml`](colab_pipeline/config/co
 
 ## Did the fine-tuning actually do anything?
 
-Fair question to ask — half the "I fine-tuned an LLM" projects out there never bother to check.
 
-So this one checks. It runs every held-out query twice: once through the raw base model, once through the tuned one, with identical retrieval and the same NLI judge both times. The adapter is the *only* thing that changes between the two runs.
+It runs every held-out query twice: once through the raw base model, once through the tuned one, with identical retrieval and the same NLI judge both times. The adapter is the *only* thing that changes between the two runs.
 
 | Metric | Raw base | Tuned (SFT + DPO) | Change |
 |---|:---:|:---:|:---:|
@@ -164,18 +163,9 @@ Roughly double the citation F1. I won't oversell it — the absolute numbers are
 colab_pipeline/run_full_pipeline.ipynb
 ```
 
-Just want the demo? Run sections `0, 1, 5` — that gets you cited answers and a public Gradio link, and it's fine on a free T4. Want the whole thing (build the data, train on an A100, run the raw-vs-tuned eval, then the demo)? Run `0` through `5` in order.
-
-Locally, if you'd rather poke at the API and tests (install the dependencies from the notebook's setup cell first):
-
-```bash
-uvicorn app.api.main:app --reload        # FastAPI
-python -m unittest discover -s tests     # 66 tests, pure stdlib
-```
-
 ---
 
-## Where things live
+## Folder Structure
 
 ```
 colab_pipeline/
