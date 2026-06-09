@@ -23,8 +23,6 @@ I have built this project on open models & datasets such as Llma. A LoRA-tuned L
 ![HuggingFace](https://img.shields.io/badge/Transformers-PEFT_·_TRL-FFD21E?style=flat-square)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
 ![Gradio](https://img.shields.io/badge/Gradio-Live_Demo-F97316?style=flat-square&logo=gradio&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-66_passing-2EA043?style=flat-square)
-![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
 
 </div>
 
