@@ -10,7 +10,7 @@ I have built this project on open models & datasets such as Llma. A LoRA-tuned L
 
 <br/>
 
-[![Watch Demo Video](https://img.shields.io/badge/Watch-Demo_Video-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](<[DEMO_VIDEO_URL](https://youtu.be/qa_a4fhMfS0?si=YsWo47zETt2bQFG-)>)
+[![Watch Demo Video](https://img.shields.io/badge/Watch-Demo_Video-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](<(https://youtu.be/qa_a4fhMfS0?si=YsWo47zETt2bQFG-)>)
 &nbsp;
 
 <br/>
