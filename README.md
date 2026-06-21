@@ -10,10 +10,11 @@ I have built this project on open models & datasets such as Llma. A LoRA-tuned L
 
 <br/>
 
-[![Watch Demo Video](https://img.shields.io/badge/Watch-Demo_Video-FF0000?style=for-the-badge&logo=youtube&logoColor=white)]((https://youtu.be/qa_a4fhMfS0?si=YsWo47zETt2bQFG-))
+[![Watch Demo Video](https://img.shields.io/badge/Watch-Demo_Video-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/qa_a4fhMfS0)
 &nbsp;
 
 <br/>
+
 
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-bf16-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)
